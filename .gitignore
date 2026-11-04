@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.env.*
+
+# Readable handbook content stays on this machine only.
+# The site ships public/content.enc, produced by `pnpm encrypt`.
+src/content/
