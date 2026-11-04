@@ -65,7 +65,8 @@ Keyboard: `/` focuses search, `Esc` clears it. The sidebar has a Lock button tha
 Checked in headless Chrome against the production build, with no console errors or exceptions:
 
 - Wrong password shows an error; the right one decrypts and renders.
-- All six cheatsheet tabs render their sections and code blocks.
+- All six cheatsheet tabs render their sections as collapsible concept cards, with expand-all and collapse-all working on cheatsheet, project, and idea pages (starter-code blocks stay closed).
+- "Show all answers" and "Hide all answers" on the interview page, and the result-type filters on the search page, work.
 - Flashcards reveal answers, mark known or review, and the "Hide mastered" filter works.
 - Project checkboxes tick, starter code expands, and progress survives a reload (the password does not).
 - Search updates live from the sidebar and links jump to the matching section with a highlight.
