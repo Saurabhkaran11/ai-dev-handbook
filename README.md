@@ -10,7 +10,7 @@ The lock screen. The site uses a single light theme: a red accent on warm neutra
 
 ![Lock screen](docs/screenshots/lock-light.png)
 
-Behind the lock: a home page with progress and a learning path, seven cheatsheet tabs (TypeScript, AI SDK, Context Engineering, Production, Required Tools, Platforms & Resources covering OpenAI, Google, Mistral, open-weight and local models, gateways, vector stores, frameworks and learning resources, and a Remember It tab with a daily loop, mnemonics, and a never-forget list), 98 interview flashcards including 24 fundamentals, 28 project cards with starter code, 16 daily-life ideas, and search across everything. The sidebar collapses to an icon rail with the chevron or the `[` key, and the cheatsheet outline can be hidden.
+Behind the lock: a home page with progress and a learning path, seven cheatsheet tabs (each with a 3-minute summary, an in-depth section that explains every core idea in plain words with analogies and several examples, and technique sections with code and sample runs) (TypeScript, AI SDK, Context Engineering, Production, Required Tools, Platforms & Resources covering OpenAI, Google, Mistral, open-weight and local models, gateways, vector stores, frameworks and learning resources, and a Remember It tab with a daily loop, mnemonics, and a never-forget list), 98 interview flashcards including 24 fundamentals, each with an "Example to explain" (a short code snippet or a spoken scenario) under the answer, 28 project cards with starter code, 16 daily-life ideas, and search across everything. The sidebar collapses to an icon rail with the chevron or the `[` key, and the cheatsheet outline can be hidden.
 
 ## Run it locally
 

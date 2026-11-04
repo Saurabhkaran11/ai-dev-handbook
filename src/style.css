@@ -592,3 +592,26 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .tile:hover, .module-card:hover, .result:hover, .index-links a:hover, .pcard:hover, .icard:hover, .qcard:hover, .btn:hover { transform: none; }
 }
+
+/* ---------- interview examples ---------- */
+.example { margin: 2px 0 12px; }
+.example-label { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.example-label::before { content: '▶'; font-size: 9px; }
+.example .code { margin: 0; }
+.example .code pre { font-size: 12.5px; }
+.scenario-example p { margin: 0; padding: 12px 14px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--glass-strong); box-shadow: var(--highlight); font-size: 14px; }
+
+/* ---------- containment: long code and tables scroll inside their box, never widen the page ---------- */
+.concept-list { grid-template-columns: minmax(0, 1fr); }
+.concept-section, .concept-body, .collection-section, .collection-content, .topic-doc, .doc, .qcard, .example, .pcard, .icard, .answer, .topic-intro { min-width: 0; max-width: 100%; }
+.code, .table-wrap, .scenario-example p { min-width: 0; max-width: 100%; overflow-x: auto; }
+.concept-body > *, .qcard > * { max-width: 100%; }
+.cards.grid { grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr)); }
+
+/* below 1200px the outline moves above the content so code gets the full column */
+@media (max-width: 1200px) {
+  .doc-layout { display: flex; flex-direction: column; gap: 14px; }
+  .topic-doc, .topic-index { width: 100%; max-width: none; }
+  .topic-index { position: static; max-height: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 5px 12px; order: -1; }
+  .topic-index .toc-title { grid-column: 1 / -1; }
+}

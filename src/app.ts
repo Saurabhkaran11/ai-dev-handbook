@@ -227,13 +227,22 @@ function questionCard(c: Content, q: Question): string {
   return `<article class="card qcard${open ? ' open' : ''}${state ? ' ' + state : ''}" id="q-${q.id}">
     <div class="qcard-head"><span class="chips"><span class="chip small">${topicTitle(c, q.topic)}</span>${q.fundamental ? '<span class="chip small fund">Fundamentals</span>' : ''}</span>${badge}</div>
     <h3>${inline(q.q)}</h3>
-    ${open ? `<p class="answer">${inline(q.a)}</p>` : ''}
+    ${open ? `<p class="answer">${inline(q.a)}</p>${q.example ? exampleBlock(q.example) : ''}` : ''}
     <div class="qcard-actions">
       <button class="btn small" data-action="toggle-answer" data-id="${q.id}" type="button">${open ? 'Hide answer' : 'Show answer'}</button>
       <button class="btn small ok${state === 'known' ? ' active' : ''}" data-action="mark" data-id="${q.id}" data-state="known" aria-pressed="${state === 'known'}" type="button">Got it</button>
       <button class="btn small warn${state === 'review' ? ' active' : ''}" data-action="mark" data-id="${q.id}" data-state="review" aria-pressed="${state === 'review'}" type="button">Review again</button>
     </div>
   </article>`;
+}
+
+/** Code examples start with "//" and get syntax highlighting; scenarios are spoken text. */
+function exampleBlock(example: string): string {
+  const isCode = example.trimStart().startsWith('//');
+  return `<div class="example${isCode ? ' code-example' : ' scenario-example'}">
+    <span class="example-label">${isCode ? 'Example to explain' : 'Example to tell'}</span>
+    ${isCode ? codeBlock(example) : `<p>${inline(example)}</p>`}
+  </div>`;
 }
 
 function projectsView(c: Content): string {

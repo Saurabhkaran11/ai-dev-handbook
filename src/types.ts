@@ -14,6 +14,8 @@ export interface Question {
   a: string;
   /** Basic-concept question, shown with a "Fundamentals" badge. */
   fundamental?: boolean;
+  /** A concrete example to explain to an interviewer. Starts with "//" when it is code. */
+  example?: string;
 }
 
 export type Concept = 'TypeScript' | 'AI SDK' | 'Context Engineering' | 'Production' | 'Tooling' | 'Platforms';
