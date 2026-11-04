@@ -12,7 +12,7 @@ The lock screen in light and dark mode. The theme follows your system setting an
 |---|---|
 | ![Lock screen, light](docs/screenshots/lock-light.png) | ![Lock screen, dark](docs/screenshots/lock-dark.png) |
 
-Behind the lock: a home page with progress and a suggested path, five cheatsheet tabs with code and sample runs, interview flashcards, 25 project cards with starter code, daily-life ideas, and search across everything.
+Behind the lock: a home page with progress and a suggested path, six cheatsheet tabs (each opening with "Fundamentals in 3 minutes", plus a "Remember It" tab with a daily loop, mnemonics, and a never-forget list), 86 interview flashcards including 20 fundamentals, 25 project cards with starter code, daily-life ideas, and search across everything.
 
 ## Run it locally
 
@@ -65,7 +65,7 @@ Keyboard: `/` focuses search, `Esc` clears it. The sidebar has a Lock button tha
 Checked in headless Chrome against the production build, with no console errors or exceptions:
 
 - Wrong password shows an error; the right one decrypts and renders.
-- All five cheatsheet tabs render their sections and code blocks (58 sections, 140 code blocks).
+- All six cheatsheet tabs render their sections and code blocks.
 - Flashcards reveal answers, mark known or review, and the "Hide mastered" filter works.
 - Project checkboxes tick, starter code expands, and progress survives a reload (the password does not).
 - Search updates live from the sidebar and links jump to the matching section with a highlight.

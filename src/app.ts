@@ -150,6 +150,7 @@ function homeView(c: Content): string {
           <li><strong>Drill.</strong> Interview questions are flashcards. Reveal the answer, then mark it known or review.</li>
           <li><strong>Build.</strong> Each project fits in an hour and has a clear done condition. Tick them off as you go.</li>
           <li><strong>Apply.</strong> Daily-life ideas link back to the projects they reuse.</li>
+          <li><strong>Remember.</strong> Every cheatsheet tab opens with "Fundamentals in 3 minutes". The <a href="#/cheatsheet/remember">Remember It</a> tab has the daily loop, mnemonics, and the never-forget list.</li>
         </ul>
         <h3>Progress</h3>
         ${progressBar(store.knownCount(), c.questions.length, 'Questions mastered')}
@@ -196,7 +197,7 @@ function questionCard(c: Content, q: Question): string {
   const state = store.questionState(q.id);
   const badge = state ? `<span class="badge ${state}">${state === 'known' ? 'Known' : 'Review'}</span>` : '';
   return `<article class="card qcard${open ? ' open' : ''}${state ? ' ' + state : ''}" id="q-${q.id}">
-    <div class="qcard-head"><span class="chip small">${topicTitle(c, q.topic)}</span>${badge}</div>
+    <div class="qcard-head"><span class="chips"><span class="chip small">${topicTitle(c, q.topic)}</span>${q.fundamental ? '<span class="chip small fund">Fundamentals</span>' : ''}</span>${badge}</div>
     <h3>${inline(q.q)}</h3>
     ${open ? `<p class="answer">${inline(q.a)}</p>` : ''}
     <div class="qcard-actions">

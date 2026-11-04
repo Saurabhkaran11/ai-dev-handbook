@@ -27,6 +27,7 @@ const topics = [
   { slug: 'context', title: 'Context Engineering', tagline: 'What enters the window, what stays, what gets compressed', file: 'context.md' },
   { slug: 'production', title: 'Production', tagline: 'From demo to something people rely on', file: 'production.md' },
   { slug: 'tools', title: 'Required Tools', tagline: 'The stack, setup, and model guide', file: 'tools.md' },
+  { slug: 'remember', title: 'Remember It', tagline: 'How to make all of this stick', file: 'remember.md' },
 ];
 
 const content: Content = {

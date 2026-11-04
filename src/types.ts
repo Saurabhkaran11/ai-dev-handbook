@@ -12,6 +12,8 @@ export interface Question {
   topic: QuestionTopic;
   q: string;
   a: string;
+  /** Basic-concept question, shown with a "Fundamentals" badge. */
+  fundamental?: boolean;
 }
 
 export type Concept = 'TypeScript' | 'AI SDK' | 'Context Engineering' | 'Production' | 'Tooling';
