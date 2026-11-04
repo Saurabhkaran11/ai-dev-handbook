@@ -1,22 +1,25 @@
 /* ---------- tokens ---------- */
 :root {
-  --bg: #f5f7f3;
-  --sidebar: #edf2ed;
+  color-scheme: light;
+  /* Red palette: crimson accent for emphasis and urgency, warm neutrals for reading.
+     Accent on white is about 6:1 contrast; text on surfaces is above 12:1. */
+  --bg: #fbf7f6;
+  --sidebar: #f6eeec;
   --surface: #ffffff;
-  --surface-2: #eef3ef;
-  --border: #d8e1db;
-  --text: #172522;
-  --muted: #52615c;
-  --accent: #0f766e;
+  --surface-2: #f8f0ee;
+  --border: #ebd9d6;
+  --text: #221417;
+  --muted: #6e5a5d;
+  --accent: #c0182c;
   --accent-text: #ffffff;
-  --accent-soft: #dcefeb;
-  --ok: #166534;
-  --ok-soft: #e0f0e5;
-  --warn: #854d0e;
-  --warn-soft: #fbf0d5;
-  --danger: #b42318;
-  --code-bg: #eff3f0;
-  --shadow: 0 1px 2px rgba(20, 40, 34, 0.04), 0 8px 24px rgba(20, 40, 34, 0.05);
+  --accent-soft: #fde6e6;
+  --ok: #15803d;
+  --ok-soft: #dcfce7;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+  --danger: #8f1220;
+  --code-bg: #f8f1f0;
+  --shadow: 0 1px 2px rgba(60, 20, 24, 0.05), 0 8px 24px rgba(60, 20, 24, 0.06);
   --radius: 12px;
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, "Liberation Mono", monospace;
@@ -31,23 +34,25 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #101a18;
-    --sidebar: #15211e;
-    --surface: #1b2925;
-    --surface-2: #24332f;
-    --border: #354740;
-    --text: #e8f0ed;
-    --muted: #b2c1bb;
-    --accent: #5eead4;
-    --accent-text: #08211e;
-    --accent-soft: #203d38;
+    color-scheme: dark;
+    /* Dark: desaturated coral accent (about 7:1 on the surface) so red reads as emphasis, not alarm. */
+    --bg: #171011;
+    --sidebar: #1d1415;
+    --surface: #241a1b;
+    --surface-2: #2d2022;
+    --border: #3e2c2f;
+    --text: #f4ebea;
+    --muted: #b7a1a2;
+    --accent: #ff7b7b;
+    --accent-text: #2b0b0d;
+    --accent-soft: #432024;
     --ok: #86efac;
-    --ok-soft: #203d2c;
+    --ok-soft: #1f3a2a;
     --warn: #fcd34d;
     --warn-soft: #413819;
-    --danger: #fca5a5;
-    --code-bg: #14201d;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 8px 24px rgba(0, 0, 0, 0.16);
+    --danger: #ffb4b4;
+    --code-bg: #1b1314;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.22);
     --tok-kw: #c4b5fd;
     --tok-str: #86efac;
     --tok-num: #fcd34d;
@@ -57,23 +62,24 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg: #101a18;
-  --sidebar: #15211e;
-  --surface: #1b2925;
-  --surface-2: #24332f;
-  --border: #354740;
-  --text: #e8f0ed;
-  --muted: #b2c1bb;
-  --accent: #5eead4;
-  --accent-text: #08211e;
-  --accent-soft: #203d38;
+  color-scheme: dark;
+  --bg: #171011;
+  --sidebar: #1d1415;
+  --surface: #241a1b;
+  --surface-2: #2d2022;
+  --border: #3e2c2f;
+  --text: #f4ebea;
+  --muted: #b7a1a2;
+  --accent: #ff7b7b;
+  --accent-text: #2b0b0d;
+  --accent-soft: #432024;
   --ok: #86efac;
-  --ok-soft: #203d2c;
+  --ok-soft: #1f3a2a;
   --warn: #fcd34d;
   --warn-soft: #413819;
-  --danger: #fca5a5;
-  --code-bg: #14201d;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 8px 24px rgba(0, 0, 0, 0.16);
+  --danger: #ffb4b4;
+  --code-bg: #1b1314;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.22);
   --tok-kw: #c4b5fd;
   --tok-str: #86efac;
   --tok-num: #fcd34d;
@@ -465,7 +471,7 @@ tr:last-child td { border-bottom: 0; }
 .idea-category-nav { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
 .idea-category-nav .chip { text-decoration: none; }
 .topic-index { max-height: calc(100vh - 150px); overflow-y: auto; }
-.action-toast { position: fixed; z-index: 50; right: 20px; bottom: 20px; max-width: min(420px, calc(100vw - 28px)); padding: 11px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; color: #f8faf9; background: #172522; box-shadow: 0 12px 32px rgba(10, 25, 21, .22); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .16s ease, transform .16s ease; }
+.action-toast { position: fixed; z-index: 50; right: 20px; bottom: 20px; max-width: min(420px, calc(100vw - 28px)); padding: 11px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; color: #fff5f4; background: #2a1518; box-shadow: 0 12px 32px rgba(10, 25, 21, .22); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .16s ease, transform .16s ease; }
 .action-toast.visible { opacity: 1; transform: translateY(0); }
 .btn.ok.active, .btn.warn.active { font-weight: 650; }
 .btn:active, .chip:active, .suggestion:active, .filter-chip:active { transform: translateY(1px); }
@@ -536,3 +542,19 @@ tr:last-child td { border-bottom: 0; }
 }
 .doc-layout.no-toc { grid-template-columns: 1fr; }
 .doc-layout.no-toc .topic-doc { max-width: 860px; }
+
+/* ---------- scrollbars: thin, themed, no black track ---------- */
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+*:hover { scrollbar-color: color-mix(in srgb, var(--muted) 55%, var(--border)) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--muted) 55%, var(--border)); border: 2px solid transparent; background-clip: padding-box; }
+.main, .sidebar, .topic-index, .code pre, .table-wrap { scrollbar-gutter: auto; }
+
+/* red accent: urgency cues on what matters most */
+.badge.start { background: var(--accent); color: var(--accent-text); }
+.progress-fill { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #ff9a6b)); }
+.step-marker, .concept-index, .module-number { background: var(--accent-soft); color: var(--accent); }
+.hero h1 em { font-style: normal; color: var(--accent); }
