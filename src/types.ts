@@ -5,7 +5,7 @@ export interface CheatsheetTopic {
   markdown: string;
 }
 
-export type QuestionTopic = 'typescript' | 'ai-sdk' | 'context' | 'production';
+export type QuestionTopic = 'typescript' | 'ai-sdk' | 'context' | 'production' | 'platforms';
 
 export interface Question {
   id: string;
@@ -16,7 +16,7 @@ export interface Question {
   fundamental?: boolean;
 }
 
-export type Concept = 'TypeScript' | 'AI SDK' | 'Context Engineering' | 'Production' | 'Tooling';
+export type Concept = 'TypeScript' | 'AI SDK' | 'Context Engineering' | 'Production' | 'Tooling' | 'Platforms';
 
 export interface Project {
   id: number;

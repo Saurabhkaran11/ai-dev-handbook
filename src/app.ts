@@ -35,12 +35,13 @@ let hideKnown = false;
 let projectFilter: Concept | 'All' = 'All';
 let resetArmed = false;
 let searchFilter = 'All';
+let outlineHidden = false;
 
 // ---------- helpers ----------
 
 const pct = (n: number, total: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
 
-type IconName = 'home' | 'library' | 'practice' | 'build' | 'idea' | 'search' | 'sun' | 'moon' | 'reset' | 'lock' | 'arrow' | 'check' | 'copy';
+type IconName = 'home' | 'library' | 'practice' | 'build' | 'idea' | 'search' | 'sun' | 'moon' | 'reset' | 'lock' | 'arrow' | 'check' | 'copy' | 'collapse' | 'expand' | 'outline';
 
 function icon(name: IconName, label?: string): string {
   const paths: Record<IconName, string> = {
@@ -57,6 +58,9 @@ function icon(name: IconName, label?: string): string {
     arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
     check: '<path d="m5 12 4 4L19 6"/>',
     copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/>',
+    collapse: '<path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/>',
+    expand: '<path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/>',
+    outline: '<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
   };
   return `<svg class="icon icon-${name}" viewBox="0 0 24 24" aria-hidden="${label ? 'false' : 'true'}"${label ? ` aria-label="${escapeHtml(label)}" role="img"` : ''} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`;
 }
@@ -120,11 +124,16 @@ function sidebar(c: Content, route: Route): string {
   ] as const;
   const q = route.page === 'search' ? route.query.get('q') ?? '' : '';
   const theme = currentTheme();
-  return `<aside class="sidebar">
-    <a class="brand" href="#/"><span class="brand-mark">AI</span><span><strong>Engineering Handbook</strong><small>TypeScript · AI SDK · Context</small></span></a>
-    <label class="search"><span class="search-icon">${icon('search')}</span><input id="search" type="search" aria-label="Search all handbook content" placeholder="Search all content…" value="${escapeHtml(q)}" autocomplete="off" /><kbd>/</kbd></label>
+  const collapsed = store.sidebarCollapsed();
+  const label = (text: string) => `<span class="ghost-label">${text}</span>`;
+  return `<aside class="sidebar${collapsed ? ' collapsed' : ''}">
+    <a class="brand" href="#/" title="Home"><span class="brand-mark">AI</span><span><strong>Engineering Handbook</strong><small>TypeScript · AI SDK · Context</small></span></a>
+    <button class="ghost sidebar-toggle" data-action="toggle-sidebar" type="button" title="${collapsed ? 'Expand sidebar  [' : 'Collapse sidebar  ['}" aria-expanded="${!collapsed}">${icon(collapsed ? 'expand' : 'collapse')}${label('Collapse')}</button>
+    ${collapsed
+      ? `<button class="ghost search-button" data-action="expand-search" type="button" title="Search  /">${icon('search')}</button>`
+      : `<label class="search"><span class="search-icon">${icon('search')}</span><input id="search" type="search" aria-label="Search all handbook content" placeholder="Search all content…" value="${escapeHtml(q)}" autocomplete="off" /><kbd>/</kbd></label>`}
     <nav aria-label="Main navigation">${nav
-      .map(([slug, label, navIcon]) => `<a class="nav-item${route.page === slug ? ' active' : ''}" href="#/${slug}"><span class="nav-icon">${icon(navIcon)}</span>${label}</a>`)
+      .map(([slug, text, navIcon]) => `<a class="nav-item${route.page === slug ? ' active' : ''}" href="#/${slug}" title="${text}"><span class="nav-icon">${icon(navIcon)}</span><span class="nav-label">${text}</span></a>`)
       .join('')}</nav>
     <div class="sidebar-progress">
       ${progressBar(store.knownCount(), c.questions.length, 'Questions mastered')}
@@ -132,9 +141,9 @@ function sidebar(c: Content, route: Route): string {
     </div>
     <div class="mobile-progress"><span>${store.knownCount()}/${c.questions.length} questions</span><span>${store.doneCount()}/${c.projects.length} projects</span></div>
     <div class="sidebar-footer">
-      <button class="ghost" data-action="theme" type="button">${theme === 'dark' ? icon('sun') + 'Light mode' : icon('moon') + 'Dark mode'}</button>
-      <button class="ghost danger" data-action="reset" type="button">${icon('reset')}${resetArmed ? 'Click again to confirm' : 'Reset progress'}</button>
-      <button class="ghost" data-action="lock" type="button">${icon('lock')}Lock</button>
+      <button class="ghost" data-action="theme" type="button" title="${theme === 'dark' ? 'Light mode' : 'Dark mode'}">${theme === 'dark' ? icon('sun') + label('Light mode') : icon('moon') + label('Dark mode')}</button>
+      <button class="ghost danger" data-action="reset" type="button" title="Reset progress">${icon('reset')}${label(resetArmed ? 'Click again to confirm' : 'Reset progress')}</button>
+      <button class="ghost" data-action="lock" type="button" title="Lock">${icon('lock')}${label('Lock')}</button>
     </div>
   </aside>`;
 }
@@ -167,7 +176,7 @@ function homeView(c: Content): string {
     </section>
     <section class="dashboard-grid">
       <div class="card progress-card"><div class="card-heading"><div><p class="eyebrow">Your progress</p><h2>Keep your momentum</h2></div><span class="progress-spark" aria-hidden="true">↗</span></div><p class="muted">Saved on this device, so you can pick up where you left off.</p>${progressBar(store.knownCount(), c.questions.length, 'Questions mastered')}${progressBar(store.doneCount(), c.projects.length, 'Projects completed')}</div>
-      <div class="card quick-tips"><p class="eyebrow">Quick tips</p><h2>Find things faster</h2><ul class="how"><li>Search by concept, tool, question, or project name.</li><li>Press <kbd>/</kbd> to jump into search; press <kbd>Esc</kbd> to clear.</li><li>Use topic tabs and filters to narrow a long list.</li><li>Every cheatsheet topic opens with "Fundamentals in 3 minutes". The <a href="#/cheatsheet/remember">Remember It</a> tab has the daily loop, mnemonics, and the never-forget list.</li></ul></div>
+      <div class="card quick-tips"><p class="eyebrow">Quick tips</p><h2>Find things faster</h2><ul class="how"><li>Search by concept, tool, question, or project name.</li><li>Press <kbd>/</kbd> to jump into search; press <kbd>Esc</kbd> to clear. Press <kbd>[</kbd> or the chevron to collapse the sidebar.</li><li>Use topic tabs and filters to narrow a long list.</li><li>Every cheatsheet topic opens with "Fundamentals in 3 minutes". The <a href="#/cheatsheet/remember">Remember It</a> tab has the daily loop, mnemonics, and the never-forget list.</li></ul></div>
     </section>`;
 }
 
@@ -187,12 +196,12 @@ function cheatsheetView(c: Content, param: string): string {
     .join('');
   return `<div class="page-head topic-head"><p class="eyebrow">Learning library <span aria-hidden="true">/</span> Reference</p><h1>${topic.title}</h1><p class="lede">${topic.tagline}</p></div>
     <div class="tabs" aria-label="Choose a topic">${tabs}</div>
-    <div class="doc-layout">
+    <div class="doc-layout${outlineHidden ? ' no-toc' : ''}">
       <article class="doc topic-doc">
         ${intro ? `<div class="topic-intro">${renderMarkdown(intro)}</div>` : ''}
-        ${sections.length ? `<div class="concept-toolbar"><span>${sections.length} short sections</span><div><button class="text-button" data-action="toggle-sections" data-target="concept-list" data-open="true" type="button">Expand all</button><span aria-hidden="true">·</span><button class="text-button" data-action="toggle-sections" data-target="concept-list" data-open="false" type="button">Collapse all</button></div></div><div class="concept-list">${sections.join('')}</div>` : renderMarkdown(topic.markdown)}
+        ${sections.length ? `<div class="concept-toolbar"><span>${sections.length} short sections</span><div><button class="text-button" data-action="toggle-sections" data-target="concept-list" data-open="true" type="button">Expand all</button><span aria-hidden="true">·</span><button class="text-button" data-action="toggle-sections" data-target="concept-list" data-open="false" type="button">Collapse all</button><span aria-hidden="true">·</span><button class="text-button" data-action="toggle-outline" type="button">${outlineHidden ? 'Show outline' : 'Hide outline'}</button></div></div><div class="concept-list">${sections.join('')}</div>` : renderMarkdown(topic.markdown)}
       </article>
-      ${sections.length ? `<nav class="toc topic-index"><p class="toc-title">In this topic</p>${parts.slice(1).map((part) => { const newline = part.indexOf('\n'); const title = (newline < 0 ? part : part.slice(0, newline)).trim(); return `<a href="#/cheatsheet/${topic.slug}?focus=${slugify(title)}">${escapeHtml(title)}</a>`; }).join('')}</nav>` : ''}
+      ${sections.length && !outlineHidden ? `<nav class="toc topic-index"><p class="toc-title">In this topic</p>${parts.slice(1).map((part) => { const newline = part.indexOf('\n'); const title = (newline < 0 ? part : part.slice(0, newline)).trim(); return `<a href="#/cheatsheet/${topic.slug}?focus=${slugify(title)}">${escapeHtml(title)}</a>`; }).join('')}</nav>` : ''}
     </div>`;
 }
 
@@ -325,6 +334,7 @@ export function render() {
   }
   const hadFocus = document.activeElement?.id === 'search';
   const caret = (document.getElementById('search') as HTMLInputElement | null)?.selectionStart ?? null;
+  app.classList.toggle('sidebar-collapsed', store.sidebarCollapsed());
   app.innerHTML = `${sidebar(c, route)}<main class="main"><div class="content">${main}</div></main><div id="action-toast" class="action-toast" role="status" aria-live="polite"></div>`;
   if (hadFocus) {
     const input = document.getElementById('search') as HTMLInputElement;
@@ -435,6 +445,19 @@ export function init() {
         document.querySelectorAll<HTMLDetailsElement>(`.${container} > details`).forEach((section) => { section.open = target.dataset.open === 'true'; });
         break;
       }
+      case 'toggle-sidebar':
+        store.setSidebarCollapsed(!store.sidebarCollapsed());
+        render();
+        break;
+      case 'expand-search':
+        store.setSidebarCollapsed(false);
+        render();
+        (document.getElementById('search') as HTMLInputElement | null)?.focus();
+        break;
+      case 'toggle-outline':
+        outlineHidden = !outlineHidden;
+        render();
+        break;
       case 'toggle-answers': {
         const ids = [...document.querySelectorAll<HTMLElement>('.qcard')].map((el) => el.id.replace(/^q-/, ''));
         if (target.dataset.open === 'true') ids.forEach((qid) => openAnswers.add(qid));
@@ -503,9 +526,16 @@ export function init() {
   document.addEventListener('keydown', (e) => {
     if (!C) return;
     const input = document.getElementById('search') as HTMLInputElement | null;
-    if (e.key === '/' && document.activeElement !== input && !(e.target as HTMLElement).matches('input, textarea')) {
+    const typing = e.target instanceof HTMLElement && e.target.matches('input, textarea');
+    if (e.key === '/' && document.activeElement !== input && !typing) {
       e.preventDefault();
-      input?.focus();
+      if (store.sidebarCollapsed()) { store.setSidebarCollapsed(false); render(); }
+      (document.getElementById('search') as HTMLInputElement | null)?.focus();
+    }
+    if (e.key === '[' && !typing) {
+      e.preventDefault();
+      store.setSidebarCollapsed(!store.sidebarCollapsed());
+      render();
     }
     if (e.key === 'Escape' && document.activeElement === input && input) {
       input.value = '';

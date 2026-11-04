@@ -5,6 +5,7 @@ interface Progress {
   questions: Record<string, QuestionState>;
   projects: Record<string, boolean>;
   theme?: Theme;
+  sidebar?: 'collapsed' | 'expanded';
 }
 
 const KEY = 'ai-dev-handbook:v1';
@@ -58,8 +59,15 @@ export const store = {
     state.theme = t;
     save();
   },
+  sidebarCollapsed(): boolean {
+    return state.sidebar === 'collapsed';
+  },
+  setSidebarCollapsed(collapsed: boolean) {
+    state.sidebar = collapsed ? 'collapsed' : 'expanded';
+    save();
+  },
   reset() {
-    state = { questions: {}, projects: {}, theme: state.theme };
+    state = { questions: {}, projects: {}, theme: state.theme, sidebar: state.sidebar };
     save();
   },
 };

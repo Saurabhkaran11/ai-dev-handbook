@@ -12,7 +12,7 @@ The lock screen in light and dark mode. The theme follows your system setting an
 |---|---|
 | ![Lock screen, light](docs/screenshots/lock-light.png) | ![Lock screen, dark](docs/screenshots/lock-dark.png) |
 
-Behind the lock: a home page with progress and a suggested path, six cheatsheet tabs (each opening with "Fundamentals in 3 minutes", plus a "Remember It" tab with a daily loop, mnemonics, and a never-forget list), 86 interview flashcards including 20 fundamentals, 25 project cards with starter code, daily-life ideas, and search across everything.
+Behind the lock: a home page with progress and a learning path, seven cheatsheet tabs (TypeScript, AI SDK, Context Engineering, Production, Required Tools, Platforms & Resources covering OpenAI, Google, Mistral, open-weight and local models, gateways, vector stores, frameworks and learning resources, and a Remember It tab with a daily loop, mnemonics, and a never-forget list), 98 interview flashcards including 24 fundamentals, 28 project cards with starter code, 16 daily-life ideas, and search across everything. The sidebar collapses to an icon rail with the chevron or the `[` key, and the cheatsheet outline can be hidden.
 
 ## Run it locally
 
