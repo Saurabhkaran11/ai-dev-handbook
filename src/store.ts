@@ -1,10 +1,8 @@
 export type QuestionState = 'known' | 'review';
-export type Theme = 'light' | 'dark';
 
 interface Progress {
   questions: Record<string, QuestionState>;
   projects: Record<string, boolean>;
-  theme?: Theme;
   sidebar?: 'collapsed' | 'expanded';
 }
 
@@ -52,13 +50,6 @@ export const store = {
   doneCount(): number {
     return Object.values(state.projects).filter(Boolean).length;
   },
-  theme(): Theme | undefined {
-    return state.theme;
-  },
-  setTheme(t: Theme) {
-    state.theme = t;
-    save();
-  },
   sidebarCollapsed(): boolean {
     return state.sidebar === 'collapsed';
   },
@@ -67,7 +58,7 @@ export const store = {
     save();
   },
   reset() {
-    state = { questions: {}, projects: {}, theme: state.theme, sidebar: state.sidebar };
+    state = { questions: {}, projects: {}, sidebar: state.sidebar };
     save();
   },
 };

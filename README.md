@@ -6,11 +6,9 @@ The content is **encrypted** (AES-256-GCM, key derived with PBKDF2) before it is
 
 ## Screenshots
 
-The lock screen in light and dark mode. The theme follows your system setting and can be toggled from the sidebar. Screenshots of the pages behind the password are intentionally not published.
+The lock screen. The site uses a single light theme: a red accent on warm neutrals with glass panels (translucent, blurred surfaces) floating over a soft layered background. Screenshots of the pages behind the password are intentionally not published.
 
-| Light | Dark |
-|---|---|
-| ![Lock screen, light](docs/screenshots/lock-light.png) | ![Lock screen, dark](docs/screenshots/lock-dark.png) |
+![Lock screen](docs/screenshots/lock-light.png)
 
 Behind the lock: a home page with progress and a learning path, seven cheatsheet tabs (TypeScript, AI SDK, Context Engineering, Production, Required Tools, Platforms & Resources covering OpenAI, Google, Mistral, open-weight and local models, gateways, vector stores, frameworks and learning resources, and a Remember It tab with a daily loop, mnemonics, and a never-forget list), 98 interview flashcards including 24 fundamentals, 28 project cards with starter code, 16 daily-life ideas, and search across everything. The sidebar collapses to an icon rail with the chevron or the `[` key, and the cheatsheet outline can be hidden.
 
@@ -70,7 +68,7 @@ Checked in headless Chrome against the production build, with no console errors 
 - Flashcards reveal answers, mark known or review, and the "Hide mastered" filter works.
 - Project checkboxes tick, starter code expands, and progress survives a reload (the password does not).
 - Search updates live from the sidebar and links jump to the matching section with a highlight.
-- Theme toggle, two-click reset, Lock, and the responsive layout at narrow widths all behave.
+- Two-click reset, Lock, sidebar collapse, and the responsive layout at narrow widths all behave.
 
 ## Stack
 

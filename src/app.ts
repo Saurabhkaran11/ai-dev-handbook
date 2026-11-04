@@ -1,5 +1,5 @@
 import type { Content, Concept, Question, Project, QuestionTopic, CheatsheetTopic } from './types';
-import { store, type Theme } from './store';
+import { store } from './store';
 import { renderMarkdown, inline, escapeHtml, codeBlock, slugify } from './markdown';
 import { decryptContent, WrongPasswordError } from './crypto';
 
@@ -123,7 +123,6 @@ function sidebar(c: Content, route: Route): string {
     ['ideas', 'Daily-life Ideas', 'idea'],
   ] as const;
   const q = route.page === 'search' ? route.query.get('q') ?? '' : '';
-  const theme = currentTheme();
   const collapsed = store.sidebarCollapsed();
   const label = (text: string) => `<span class="ghost-label">${text}</span>`;
   return `<aside class="sidebar${collapsed ? ' collapsed' : ''}">
@@ -141,7 +140,6 @@ function sidebar(c: Content, route: Route): string {
     </div>
     <div class="mobile-progress"><span>${store.knownCount()}/${c.questions.length} questions</span><span>${store.doneCount()}/${c.projects.length} projects</span></div>
     <div class="sidebar-footer">
-      <button class="ghost" data-action="theme" type="button" title="${theme === 'dark' ? 'Light mode' : 'Dark mode'}">${theme === 'dark' ? icon('sun') + label('Light mode') : icon('moon') + label('Dark mode')}</button>
       <button class="ghost danger" data-action="reset" type="button" title="Reset progress">${icon('reset')}${label(resetArmed ? 'Click again to confirm' : 'Reset progress')}</button>
       <button class="ghost" data-action="lock" type="button" title="Lock">${icon('lock')}${label('Lock')}</button>
     </div>
@@ -368,17 +366,6 @@ function showToast(message: string) {
 
 // ---------- events ----------
 
-function applyTheme(t: Theme | undefined) {
-  if (t) document.documentElement.dataset.theme = t;
-  else delete document.documentElement.dataset.theme;
-}
-
-function currentTheme(): Theme {
-  const set = document.documentElement.dataset.theme as Theme | undefined;
-  if (set) return set;
-  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
 async function unlock(password: string) {
   unlocking = true;
   unlockError = '';
@@ -395,7 +382,7 @@ async function unlock(password: string) {
 }
 
 export function init() {
-  applyTheme(store.theme());
+  delete document.documentElement.dataset.theme;   // light only; clear any theme saved by an earlier version
 
   app.addEventListener('submit', (e) => {
     const form = e.target as HTMLFormElement;
@@ -463,14 +450,6 @@ export function init() {
         if (target.dataset.open === 'true') ids.forEach((qid) => openAnswers.add(qid));
         else ids.forEach((qid) => openAnswers.delete(qid));
         render();
-        break;
-      }
-      case 'theme': {
-        const next: Theme = currentTheme() === 'dark' ? 'light' : 'dark';
-        store.setTheme(next);
-        applyTheme(next);
-        render();
-        showToast(`${next === 'dark' ? 'Dark' : 'Light'} theme enabled`);
         break;
       }
       case 'reset': {

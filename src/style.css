@@ -32,61 +32,7 @@
   --tok-attr: #0e5f73;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    /* Dark: desaturated coral accent (about 7:1 on the surface) so red reads as emphasis, not alarm. */
-    --bg: #171011;
-    --sidebar: #1d1415;
-    --surface: #241a1b;
-    --surface-2: #2d2022;
-    --border: #3e2c2f;
-    --text: #f4ebea;
-    --muted: #b7a1a2;
-    --accent: #ff7b7b;
-    --accent-text: #2b0b0d;
-    --accent-soft: #432024;
-    --ok: #86efac;
-    --ok-soft: #1f3a2a;
-    --warn: #fcd34d;
-    --warn-soft: #413819;
-    --danger: #ffb4b4;
-    --code-bg: #1b1314;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.22);
-    --tok-kw: #c4b5fd;
-    --tok-str: #86efac;
-    --tok-num: #fcd34d;
-    --tok-cmt: #a7b5af;
-    --tok-fn: #93c5fd;
-    --tok-attr: #67e8f9;
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #171011;
-  --sidebar: #1d1415;
-  --surface: #241a1b;
-  --surface-2: #2d2022;
-  --border: #3e2c2f;
-  --text: #f4ebea;
-  --muted: #b7a1a2;
-  --accent: #ff7b7b;
-  --accent-text: #2b0b0d;
-  --accent-soft: #432024;
-  --ok: #86efac;
-  --ok-soft: #1f3a2a;
-  --warn: #fcd34d;
-  --warn-soft: #413819;
-  --danger: #ffb4b4;
-  --code-bg: #1b1314;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.22);
-  --tok-kw: #c4b5fd;
-  --tok-str: #86efac;
-  --tok-num: #fcd34d;
-  --tok-cmt: #a7b5af;
-  --tok-fn: #93c5fd;
-  --tok-attr: #67e8f9;
-}
+/* Light only. The red palette is designed for light surfaces; there is no dark theme. */
 
 /* ---------- base ---------- */
 * { box-sizing: border-box; }
@@ -558,3 +504,91 @@ tr:last-child td { border-bottom: 0; }
 .progress-fill { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #ff9a6b)); }
 .step-marker, .concept-index, .module-number { background: var(--accent-soft); color: var(--accent); }
 .hero h1 em { font-style: normal; color: var(--accent); }
+
+/* ---------- glass and spatial UI (light only) ---------- */
+:root {
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-strong: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-edge: rgba(192, 24, 44, 0.10);
+  --depth-1: 0 1px 2px rgba(70, 20, 26, 0.04), 0 10px 28px rgba(70, 20, 26, 0.07);
+  --depth-2: 0 2px 4px rgba(70, 20, 26, 0.05), 0 22px 48px rgba(70, 20, 26, 0.12);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* layered, slowly varying background that the glass panels float over */
+body {
+  background:
+    radial-gradient(900px 600px at 8% -10%, rgba(192, 24, 44, 0.14), transparent 60%),
+    radial-gradient(800px 560px at 100% 10%, rgba(255, 148, 120, 0.18), transparent 60%),
+    radial-gradient(700px 500px at 60% 110%, rgba(255, 196, 180, 0.22), transparent 60%),
+    linear-gradient(180deg, #fcf8f7 0%, #f8efed 100%);
+  background-attachment: fixed;
+}
+#app { background: transparent; }
+
+/* sidebar: frosted rail */
+.sidebar {
+  background: var(--glass);
+  border-right: 1px solid var(--glass-border);
+  box-shadow: 1px 0 0 var(--glass-edge), var(--depth-1);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+.search { background: var(--glass-strong); border-color: var(--glass-border); box-shadow: var(--highlight), 0 1px 2px rgba(70, 20, 26, 0.04); }
+.nav-item.active { background: var(--accent-soft); box-shadow: var(--highlight); }
+
+/* surfaces: translucent cards with an inner highlight and soft depth */
+.card, .tile, .module-card, .roadmap, .concept-section, .collection-section, .result, .index-links a, .search-empty,
+.lock-card, .topic-intro, .table-wrap, .answer {
+  background: var(--glass);
+  border-color: var(--glass-border);
+  box-shadow: var(--highlight), 0 0 0 1px var(--glass-edge), var(--depth-1);
+}
+.topic-intro { border-left: 3px solid var(--accent); }
+.concept-section[open], .collection-section[open] { background: var(--glass-strong); box-shadow: var(--highlight), 0 0 0 1px rgba(192, 24, 44, 0.22), var(--depth-2); }
+.code { background: var(--glass-strong); border-color: var(--glass-border); box-shadow: var(--highlight), 0 0 0 1px var(--glass-edge); }
+.code pre { background: transparent; }
+.answer { background: var(--glass-strong); }
+
+/* spatial: things lift toward you on hover */
+.card, .tile, .module-card, .result, .roadmap-step, .index-links a, .concept-section, .collection-section, .btn, .chip, .mini-action {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+.tile:hover, .module-card:hover, .result:hover, .index-links a:hover, .pcard:hover, .icard:hover, .qcard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--highlight), 0 0 0 1px rgba(192, 24, 44, 0.22), var(--depth-2);
+  border-color: var(--glass-border);
+}
+.roadmap-step:hover { background: var(--glass-strong); }
+.btn { box-shadow: var(--highlight), 0 1px 2px rgba(70, 20, 26, 0.06); }
+.btn:hover { transform: translateY(-1px); }
+.btn.primary { box-shadow: 0 6px 18px rgba(192, 24, 44, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.btn.primary:hover { box-shadow: 0 10px 24px rgba(192, 24, 44, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.chip, .filter-chip, .suggestion { background: var(--glass-strong); box-shadow: var(--highlight); }
+.chip.active, .tab.active { box-shadow: 0 4px 14px rgba(192, 24, 44, 0.25); }
+.tab.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+/* frosted floating pieces */
+.topic-index, .action-toast {
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+.topic-index { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; padding: 14px; box-shadow: var(--highlight), var(--depth-1); }
+.action-toast { background: rgba(42, 21, 24, 0.86); border-color: rgba(255, 255, 255, 0.18); }
+.lock { background: transparent; }
+.lock-card { backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); box-shadow: var(--highlight), 0 0 0 1px var(--glass-edge), var(--depth-2); }
+.lock-field input { background: var(--glass-strong); }
+.brand-mark { box-shadow: 0 6px 16px rgba(192, 24, 44, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.progress-track { background: rgba(192, 24, 44, 0.10); box-shadow: inset 0 1px 2px rgba(70, 20, 26, 0.08); }
+.module-number, .concept-index, .step-marker { box-shadow: var(--highlight); }
+
+/* keep the code readable: no translucency behind text in pre blocks is a problem only on busy backgrounds, so pin a light base */
+.code { background-color: rgba(255, 255, 255, 0.86); }
+
+@supports not (backdrop-filter: blur(1px)) {
+  .sidebar, .lock-card, .topic-index { background: rgba(255, 255, 255, 0.94); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover, .module-card:hover, .result:hover, .index-links a:hover, .pcard:hover, .icard:hover, .qcard:hover, .btn:hover { transform: none; }
+}
